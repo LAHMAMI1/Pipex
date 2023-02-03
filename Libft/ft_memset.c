@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: olahmami <olahmami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/19 22:35:54 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/03 04:50:45 by olahmami         ###   ########.fr       */
+/*   Created: 2022/10/07 22:21:51 by olahmami          #+#    #+#             */
+/*   Updated: 2022/11/03 00:48:09 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-#define PIPEX_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include "Libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t	i;
 
-#endif
+	i = 0;
+	while (i < len)
+	{
+		((unsigned char *)b)[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
+}

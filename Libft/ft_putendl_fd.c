@@ -1,23 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: olahmami <olahmami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/19 22:35:54 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/03 04:50:45 by olahmami         ###   ########.fr       */
+/*   Created: 2022/11/01 00:22:44 by olahmami          #+#    #+#             */
+/*   Updated: 2022/11/01 19:16:10 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-#define PIPEX_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include "Libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
+void	ft_putendl_fd(char *s, int fd)
+{
+	size_t	i;
 
-#endif
+	if (!s)
+		return ;
+	i = 0;
+	while (s[i])
+	{
+		ft_putchar_fd(s[i], fd);
+		i++;
+	}
+	write(fd, "\n", 1);
+}

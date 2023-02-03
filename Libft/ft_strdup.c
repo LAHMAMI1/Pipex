@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/19 22:35:54 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/03 04:50:45 by olahmami         ###   ########.fr       */
+/*   Created: 2022/10/31 23:12:08 by olahmami          #+#    #+#             */
+/*   Updated: 2023/02/03 05:24:22 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-#define PIPEX_H
+#include "libft.h"
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include "Libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
+char *ft_strdup(const char *s1)
+{
+	char *str;
+	int i;
 
-#endif
+	str = malloc(ft_strlen(s1) + 1);
+	if (!str)
+		return (0);
+	i = 0;
+	while (s1[i])
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}
