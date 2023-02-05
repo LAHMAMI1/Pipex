@@ -6,7 +6,7 @@
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 22:35:51 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/03 23:32:00 by olahmami         ###   ########.fr       */
+/*   Updated: 2023/02/05 00:35:56 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ void cmd1(char *av1, char *av2)
 int main(int argc, char const *argv[], char **envp)
 {
 	char **split_path = read_env(envp);
+	int fd[2];
 	pid_t pid1;
 
+	if (pipe(fd) == -1)
+		return 1;
+	
 	if (argc == 5)
 	{
 		pid1 = fork();
