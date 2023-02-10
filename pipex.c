@@ -6,7 +6,7 @@
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 22:35:51 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/10 04:49:07 by olahmami         ###   ########.fr       */
+/*   Updated: 2023/02/10 08:56:17 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,30 @@ char *cmd1(t_pipex *p, char **argv,char **envp)
 	return(p->executable);
 }
 
+char *cmd2(t_pipex *p, char **argv,char **envp)
+{
+	close(p->fd[1]);
+	p->outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC);
+	dup2(p->outfile, 1);
+	dup2(p->fd[0], 0);
+	p->split_cmd = ft_split(argv[3], ' ');
+	if (access(p->split_cmd[0], F_OK | X_OK) < 0)
+	{
+		p->split_path = read_env(&p, envp);
+		p->i = 0;
+		while (p->split_path[p->i])
+		{
+			p->executable = ft_strjoin(p->split_path, p->split_cmd[0]);
+			if (access(p->executable, F_OK | X_OK) == 0)
+				return(p->executable);
+			p->i++;
+		}
+	}
+	else
+		p->executable = p->split_cmd[0];
+	return(p->executable);
+}
+
 void execution(t_pipex *p, char **envp)
 {
 	if (execve(p->executable, p->split_cmd, envp) == -1)
@@ -93,14 +117,13 @@ int main(int argc, char const *argv[], char **envp)
 			exit(1);
 		if (p.pid2 == 0)
 		{
-			close(p.fd[1]);
-			dup2(p.fd[0], 0);
-			close(p.fd[0]);
-			
+			cmd2(&p, argv, envp);
+			execution(&p, envp);
 		}
+		close(p.fd[0]);
+		close(p.fd[1]);
 		waitpid(p.pid1, NULL, 0);
 		waitpid(p.pid2, NULL, 0);
 	}
-	
   return 0;
 }
