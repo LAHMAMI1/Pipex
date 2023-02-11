@@ -6,7 +6,7 @@
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 22:35:54 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/10 04:43:20 by olahmami         ###   ########.fr       */
+/*   Updated: 2023/02/11 02:10:43 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include "Libft/libft.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 

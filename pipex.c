@@ -6,7 +6,7 @@
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 22:35:51 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/10 08:56:17 by olahmami         ###   ########.fr       */
+/*   Updated: 2023/02/11 08:26:04 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,41 @@ char	**read_env(t_pipex *p, char **envp)
 char *cmd1(t_pipex *p, char **argv,char **envp)
 {
 	close(p->fd[0]);
-	p->infile = open(argv[1], O_RDONLY);
+	if ((p->infile = open(argv[1], O_RDONLY, 0644)) == -1)
+	{
+		perror("");
+		exit(127);
+	}
 	dup2(p->infile, 0);
 	dup2(p->fd[1], 1);
 	p->split_cmd = ft_split(argv[2], ' ');
+	// p->i = 0;
+	// while (p->split_cmd[0][p->i])
+	// {
+	// 	if (p->split_cmd[0][p->i] == '/' && p->split_cmd[0][p->i + 1] == '/')
+	// 	{
+	// 		printf("/bin er");
+	// 		perror("double /");
+	// 		exit(127);
+	// 	}
+	// 	p->i++;
+	// }
+	
 	if (access(p->split_cmd[0], F_OK | X_OK) < 0)
 	{
-		p->split_path = read_env(&p, envp);
+		if (ft_strchr(p->split_cmd[0], '/'))
+		{
+			perror("/ error");
+			exit(127);
+		}
+		p->split_path = read_env(p, envp);
 		p->i = 0;
 		while (p->split_path[p->i])
 		{
-			p->executable = ft_strjoin(p->split_path, p->split_cmd[0]);
+			p->executable = ft_strjoin(p->split_path[p->i], p->split_cmd[0]);
 			if (access(p->executable, F_OK | X_OK) == 0)
 				return(p->executable);
+			free(p->executable);
 			p->i++;
 		}
 	}
@@ -66,19 +88,40 @@ char *cmd1(t_pipex *p, char **argv,char **envp)
 char *cmd2(t_pipex *p, char **argv,char **envp)
 {
 	close(p->fd[1]);
-	p->outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC);
+	if ((p->outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644)) == -1)
+	{
+		perror("");
+		exit(127);
+	}
 	dup2(p->outfile, 1);
 	dup2(p->fd[0], 0);
 	p->split_cmd = ft_split(argv[3], ' ');
+	// p->i = 0;
+	// while (p->split_cmd[0][p->i])
+	// {
+	// 	if (p->split_cmd[0][p->i] == '/' && p->split_cmd[0][p->i + 1] == '/')
+	// 	{
+			
+	// 		perror("double /");
+	// 		exit(127);
+	// 	}
+	// 	p->i++;
+	// }
 	if (access(p->split_cmd[0], F_OK | X_OK) < 0)
 	{
-		p->split_path = read_env(&p, envp);
+		if (ft_strchr(p->split_cmd[0], '/'))
+		{
+			perror("/ error");
+			exit(127);
+		}
+		p->split_path = read_env(p, envp);
 		p->i = 0;
 		while (p->split_path[p->i])
 		{
-			p->executable = ft_strjoin(p->split_path, p->split_cmd[0]);
+			p->executable = ft_strjoin(p->split_path[p->i], p->split_cmd[0]);
 			if (access(p->executable, F_OK | X_OK) == 0)
 				return(p->executable);
+			free(p->executable);
 			p->i++;
 		}
 	}
@@ -91,22 +134,28 @@ void execution(t_pipex *p, char **envp)
 {
 	if (execve(p->executable, p->split_cmd, envp) == -1)
 	{
-		ft_putstr_fd("Error", 2);
+		perror("");
 		exit(127);
 	}
 }
 
-int main(int argc, char const *argv[], char **envp)
+int main(int argc, char *argv[], char **envp)
 {
 	t_pipex p;
 
 	if (pipe(p.fd) == -1)
-		return 1;
+	{
+		perror("");
+		exit(127);
+	}
 	if (argc == 5)
 	{
 		p.pid1 = fork();
 		if (p.pid1 < 0)
-			exit(1);
+		{
+			perror("error 1");
+			exit(127);
+		}
 		if (p.pid1 == 0)
 		{
 			cmd1(&p, argv, envp);
@@ -114,7 +163,10 @@ int main(int argc, char const *argv[], char **envp)
 		}
 		p.pid2 = fork();
 		if (p.pid2 < 0)
-			exit(1);
+		{
+			perror("error 1");
+			exit(127);
+		}
 		if (p.pid2 == 0)
 		{
 			cmd2(&p, argv, envp);
@@ -125,5 +177,10 @@ int main(int argc, char const *argv[], char **envp)
 		waitpid(p.pid1, NULL, 0);
 		waitpid(p.pid2, NULL, 0);
 	}
-  return 0;
+	else
+	{
+		
+		perror("");
+		exit(127);
+	}
 }
