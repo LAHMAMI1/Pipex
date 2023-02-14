@@ -6,15 +6,18 @@
 #    By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/19 22:35:21 by olahmami          #+#    #+#              #
-#    Updated: 2023/02/11 22:54:41 by olahmami         ###   ########.fr        #
+#    Updated: 2023/02/14 13:02:44 by olahmami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC			=	cc
+
 NAME		=	pipex
+
 CFLAGS		=	-Wall -Wextra -Werror
 
-SRCS		=	pipex.c
+SRCS		=	utils.c \
+				pipex.c
 
 LIBS		=	libft.a
 

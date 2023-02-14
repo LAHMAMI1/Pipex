@@ -6,16 +6,16 @@
 /*   By: olahmami <olahmami@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/31 23:12:08 by olahmami          #+#    #+#             */
-/*   Updated: 2023/02/03 05:24:22 by olahmami         ###   ########.fr       */
+/*   Updated: 2023/02/14 11:13:41 by olahmami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
-	char *str;
-	int i;
+	char	*str;
+	int		i;
 
 	str = malloc(ft_strlen(s1) + 1);
 	if (!str)
